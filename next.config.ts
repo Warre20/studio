@@ -1,12 +1,7 @@
 import type {NextConfig} from 'next';
 
-const repoName = 'instant-invoice';
-
 const nextConfig: NextConfig = {
   /* config options here */
-  output: 'export',
-  basePath: `/$\{repoName}`,
-  assetPrefix: `/${repoName}/`,
   typescript: {
     ignoreBuildErrors: true,
   },
