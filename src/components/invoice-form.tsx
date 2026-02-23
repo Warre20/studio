@@ -1,6 +1,7 @@
 "use client";
 
 import type { Dispatch, SetStateAction } from 'react';
+import { useRef } from 'react';
 import type { Invoice, LineItem } from '@/types/invoice';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -15,6 +16,8 @@ interface InvoiceFormProps {
 }
 
 export default function InvoiceForm({ invoice, setInvoice }: InvoiceFormProps) {
+  const newItemIdCounter = useRef(0);
+
   const handleFieldChange = (section: 'from' | 'to', field: string, value: string) => {
     setInvoice(prev => ({
       ...prev,
@@ -40,11 +43,12 @@ export default function InvoiceForm({ invoice, setInvoice }: InvoiceFormProps) {
   };
 
   const addLineItem = () => {
+    newItemIdCounter.current += 1;
     setInvoice(prev => ({
       ...prev,
       lineItems: [
         ...prev.lineItems,
-        { id: String(Date.now() + Math.random()), description: '', quantity: 1, price: 0 }
+        { id: `new-${newItemIdCounter.current}-${Date.now()}`, description: '', quantity: 1, price: 0 }
       ]
     }));
   };

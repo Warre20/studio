@@ -28,19 +28,19 @@ export default function Home() {
     ...initialStaticData,
     invoiceDate: '',
     dueDate: '',
-    lineItems: [],
+    lineItems: [
+      { id: '1', description: 'Web Design Services', quantity: 10, price: 150 },
+      { id: '2', description: 'Hosting (1 year)', quantity: 1, price: 300 },
+    ],
   });
 
   useEffect(() => {
-    setInvoice({
-      ...initialStaticData,
+    // Set dates only on the client-side after hydration
+    setInvoice(prev => ({
+      ...prev,
       invoiceDate: format(new Date(), 'yyyy-MM-dd'),
       dueDate: format(new Date(new Date().setDate(new Date().getDate() + 30)), 'yyyy-MM-dd'),
-      lineItems: [
-        { id: String(Date.now() + 1), description: 'Web Design Services', quantity: 10, price: 150 },
-        { id: String(Date.now() + 2), description: 'Hosting (1 year)', quantity: 1, price: 300 },
-      ],
-    });
+    }));
   }, []);
 
   return (
