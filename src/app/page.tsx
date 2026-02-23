@@ -1,34 +1,47 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { Invoice } from '@/types/invoice';
 import { format } from 'date-fns';
 import InvoiceForm from '@/components/invoice-form';
 import InvoicePreview from '@/components/invoice-preview';
 import { FileText } from 'lucide-react';
 
+const initialStaticData = {
+  from: {
+    name: 'Your Company',
+    address: '123 Main St, Anytown, USA',
+    email: 'contact@yourcompany.com',
+    phone: '555-123-4567',
+  },
+  to: {
+    name: 'Client Company',
+    address: '456 Oak Ave, Otherville, USA',
+    email: 'contact@client.com',
+  },
+  invoiceNumber: 'INV-001',
+  taxRate: 8,
+};
+
 export default function Home() {
   const [invoice, setInvoice] = useState<Invoice>({
-    from: {
-      name: 'Your Company',
-      address: '123 Main St, Anytown, USA',
-      email: 'contact@yourcompany.com',
-      phone: '555-123-4567',
-    },
-    to: {
-      name: 'Client Company',
-      address: '456 Oak Ave, Otherville, USA',
-      email: 'contact@client.com',
-    },
-    invoiceNumber: 'INV-001',
-    invoiceDate: format(new Date(), 'yyyy-MM-dd'),
-    dueDate: format(new Date(new Date().setDate(new Date().getDate() + 30)), 'yyyy-MM-dd'),
-    lineItems: [
-      { id: String(Date.now() + 1), description: 'Web Design Services', quantity: 10, price: 150 },
-      { id: String(Date.now() + 2), description: 'Hosting (1 year)', quantity: 1, price: 300 },
-    ],
-    taxRate: 8,
+    ...initialStaticData,
+    invoiceDate: '',
+    dueDate: '',
+    lineItems: [],
   });
+
+  useEffect(() => {
+    setInvoice({
+      ...initialStaticData,
+      invoiceDate: format(new Date(), 'yyyy-MM-dd'),
+      dueDate: format(new Date(new Date().setDate(new Date().getDate() + 30)), 'yyyy-MM-dd'),
+      lineItems: [
+        { id: String(Date.now() + 1), description: 'Web Design Services', quantity: 10, price: 150 },
+        { id: String(Date.now() + 2), description: 'Hosting (1 year)', quantity: 1, price: 300 },
+      ],
+    });
+  }, []);
 
   return (
     <main className="min-h-screen bg-background p-4 sm:p-6 lg:p-8">
